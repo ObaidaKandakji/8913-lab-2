@@ -8,14 +8,25 @@
 ## Q1. IaaS Deployment (Azure Virtual Machines)
 
 ### Diagram
-Users  
-  │  
-  ▼  
-[ Azure Load Balancer ]  
-  │  
-  ├─> [ VM Scale Set: Linux VMs running Nginx + Gunicorn/Flask ]  
-  │  
-  └─> [ Azure VNet / Subnets ] → [ Azure VM: PostgreSQL ] (private IP only)  
++-------------------------+
+| Users (Browser/Client)  |
++-------------------------+
+            │
+            ▼
++-------------------------+
+| Azure Load Balancer     |
++-------------------------+
+            │
+            ▼
++-------------------------+
+| VM Scale Set (Flask API)|
+|   + React (static)      |
++-------------------------+
+            │
+            ▼
++-------------------------+
+| VM: PostgreSQL Database |
++-------------------------+
 
 ### Description
 - **Compute:** Use **Azure Virtual Machines** in a **VM Scale Set** for Flask. We install Nginx + Gunicorn manually.  
@@ -29,15 +40,26 @@ Users
 
 ## Q2. PaaS Deployment (Azure Managed Services)
 
-### Diagram
-Users  
-  │  
-  ▼  
-[ Azure Front Door / CDN ]  
-  │  
-  ├─> [ Azure Static Web Apps (React) ]  
-  │  
-  └─> [ Azure App Service (Flask API) ] → [ Azure Database for PostgreSQL – Flexible Server ]  
++-------------------------+
+| Users (Browser/Client)  |
++-------------------------+
+            │
+            ▼
++-------------------------------+
+| Azure Front Door / CDN        |
++-------------------------------+
+   │                     │
+   ▼                     ▼
++-----------------+   +-------------------------+
+| Static Web App  |   | Azure App Service (API) |
+| (React)         |   | Flask runtime managed   |
++-----------------+   +-------------------------+
+                             │
+                             ▼
+                   +------------------------------+
+                   | Azure Database for PostgreSQL|
+                   | (Fully managed service)      |
+                   +------------------------------+  
 
 ### Description
 - **UI (React):** Deployed to **Azure Static Web Apps** — global CDN, free SSL, auto-build from GitHub.  
